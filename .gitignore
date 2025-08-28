@@ -49,3 +49,5 @@ python-server/*.sqlite3
 python-server/venv/
 .env
 app.log
+node_modules/
+**/node_modules/
