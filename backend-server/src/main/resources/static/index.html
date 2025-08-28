@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>민원 북마클릿 테스트</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            text-align: center;
+            margin: 20px 0;
+            color: #666;
+        }
+
+        .result-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #4facfe;
+        }
+
+        .result-container h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .result-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #e1e5e9;
+        }
+
+        .result-item strong {
+            color: #4facfe;
+        }
+
+        .bookmarklet-code {
+            background: #f1f3f4;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            border-color: #fcc;
+        }
+
+        .success {
+            background: #efe;
+            color: #363;
+            border-color: #cfc;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .checkbox-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>민원 북마클릿 테스트</h1>
+            <p>AI가 개선한 민원 내용으로 북마클릿을 생성합니다</p>
+        </div>
+
+        <div class="form-container">
+            <!-- 저장된 민원 목록 섹션 -->
+            <div id="savedComplaints" style="margin-bottom: 30px;">
+                <h3 style="margin-bottom: 15px; color: #333;">저장된 민원 목록</h3>
+                <button type="button" id="loadComplaintsBtn" class="submit-btn"
+                    style="width: 200px; margin-bottom: 15px;">
+                    저장된 민원 불러오기
+                </button>
+                <div id="complaintsTable" style="display: none;">
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                        <thead>
+                            <tr style="background: #f8f9fa;">
+                                <th style="padding: 10px; border: 1px solid #ddd;">ID</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">제목</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">시스템</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">작성일</th>
+                                <th style="padding: 10px; border: 1px solid #ddd;">작업</th>
+                            </tr>
+                        </thead>
+                        <tbody id="complaintsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <hr style="margin: 30px 0; border: none; border-top: 2px solid #e1e5e9;">
+
+            <!-- 새 민원 입력 폼 -->
+            <h3 style="margin-bottom: 20px; color: #333;">새 민원 작성</h3>
+            <form id="complaintForm">
+                <div class="form-group">
+                    <label for="system">민원 시스템</label>
+                    <select id="system" name="system" required>
+                        <option value="DDM">구청장에게 바란다</option>
+                        <option value="SAFETY">안전신문고</option>
+                        <option value="SAEOL">새올전자민원창구</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" name="title" required placeholder="민원 제목을 입력하세요">
+                </div>
+
+                <div class="form-group">
+                    <label for="content">내용</label>
+                    <textarea id="content" name="content" required
+                        placeholder="민원 내용을 입력하세요. AI가 이 내용을 개선하여 북마클릿을 생성합니다."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">전화번호</label>
+                    <input type="tel" id="phone" name="phone" placeholder="010-1234-5678">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input type="email" id="email" name="email" placeholder="example@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label>추가 옵션</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="isPublic" name="isPublic" value="Y">
+                            <label for="isPublic">공개</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="smsNotification" name="smsNotification" value="Y">
+                            <label for="smsNotification">SMS 알림</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    북마클릿 생성하기
+                </button>
+            </form>
+
+            <div id="loading" class="loading" style="display: none;">
+                <p>AI가 내용을 개선하고 북마클릿을 생성하는 중입니다...</p>
+            </div>
+
+            <div id="result" class="result-container" style="display: none;">
+                <h3>생성 결과</h3>
+                <div id="resultContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 저장된 민원 불러오기
+        document.getElementById('loadComplaintsBtn').addEventListener('click', async function () {
+            try {
+                const response = await fetch('/api/bookmarklet/complaints');
+                const complaints = await response.json();
+
+                const tbody = document.getElementById('complaintsTableBody');
+                tbody.innerHTML = '';
+
+                complaints.forEach(complaint => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td style="padding: 10px; border: 1px solid #ddd;">${complaint.id}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">${complaint.title}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">${complaint.system}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">${new Date(complaint.createdAt).toLocaleString()}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">
+                            <button onclick="regenerateBookmarklet(${complaint.id})" 
+                                    style="padding: 5px 10px; background: #4facfe; color: white; border: none; border-radius: 3px; cursor: pointer;">
+                                북마클릿 재생성
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                document.getElementById('complaintsTable').style.display = 'block';
+            } catch (error) {
+                alert('저장된 민원 목록을 불러오는 중 오류가 발생했습니다: ' + error.message);
+            }
+        });
+
+        // 북마클릿 재생성
+        async function regenerateBookmarklet(id) {
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            const resultContent = document.getElementById('resultContent');
+
+            loading.style.display = 'block';
+            result.style.display = 'none';
+
+            try {
+                const response = await fetch(`/api/bookmarklet/regenerate/${id}`, {
+                    method: 'POST'
+                });
+
+                const responseData = await response.json();
+
+                loading.style.display = 'none';
+                result.style.display = 'block';
+
+                if (responseData.success) {
+                    resultContent.innerHTML = `
+                        <div class="result-item success">
+                            <strong>재생성 성공!</strong><br>
+                            DB ID: ${id}<br>
+                            시스템: ${responseData.systemName || responseData.system}<br>
+                            템플릿 ID: ${responseData.templateId}<br>
+                            생성 시간: ${responseData.createdAt}
+                        </div>
+                        <div class="result-item">
+                            <strong>사이트 URL:</strong><br>
+                            <a href="${responseData.siteUrl}" target="_blank">${responseData.siteUrl}</a>
+                        </div>
+                        <div class="result-item">
+                            <strong>북마클릿 코드:</strong><br>
+                            <div class="bookmarklet-code">${responseData.bookmarkletCode || responseData.bookmarkletUrl}</div>
+                        </div>
+                    `;
+                } else {
+                    resultContent.innerHTML = `
+                        <div class="result-item error">
+                            <strong>재생성 실패:</strong><br>
+                            ${responseData.message}
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                loading.style.display = 'none';
+                result.style.display = 'block';
+                resultContent.innerHTML = `
+                    <div class="result-item error">
+                        <strong>오류 발생:</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // 새 민원 작성 폼
+        document.getElementById('complaintForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            const resultContent = document.getElementById('resultContent');
+
+            // UI 상태 변경
+            submitBtn.disabled = true;
+            submitBtn.textContent = '처리 중...';
+            loading.style.display = 'block';
+            result.style.display = 'none';
+
+            try {
+                // 폼 데이터 수집
+                const formData = new FormData(this);
+                const data = {
+                    system: formData.get('system'),
+                    title: formData.get('title'),
+                    content: formData.get('content'),
+                    phone: formData.get('phone'),
+                    email: formData.get('email'),
+                    isPublic: formData.get('isPublic') ? 'Y' : 'N',
+                    smsNotification: formData.get('smsNotification') ? 'Y' : 'N'
+                };
+
+                console.log('전송 데이터:', data);
+
+                // API 호출
+                const response = await fetch('/api/bookmarklet/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const responseData = await response.json();
+                console.log('응답 데이터:', responseData);
+
+                // 결과 표시
+                loading.style.display = 'none';
+                result.style.display = 'block';
+
+                if (responseData.success) {
+                    resultContent.innerHTML = `
+                        <div class="result-item success">
+                            <strong>생성 성공!</strong><br>
+                            시스템: ${responseData.systemName || responseData.system}<br>
+                            템플릿 ID: ${responseData.templateId}<br>
+                            생성 시간: ${responseData.createdAt}
+                        </div>
+                        <div class="result-item">
+                            <strong>사이트 URL:</strong><br>
+                            <a href="${responseData.siteUrl}" target="_blank">${responseData.siteUrl}</a>
+                        </div>
+                        <div class="result-item">
+                            <strong>북마클릿 코드:</strong><br>
+                            <div class="bookmarklet-code">${responseData.bookmarkletCode || responseData.bookmarkletUrl}</div>
+                        </div>
+                    `;
+                } else {
+                    resultContent.innerHTML = `
+                        <div class="result-item error">
+                            <strong>생성 실패:</strong><br>
+                            ${responseData.message}
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                console.error('오류 발생:', error);
+                loading.style.display = 'none';
+                result.style.display = 'block';
+                resultContent.innerHTML = `
+                    <div class="result-item error">
+                        <strong>오류 발생:</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '북마클릿 생성하기';
+
+                // 저장된 민원 목록 새로고침 (새 데이터 추가됨)
+                document.getElementById('loadComplaintsBtn').click();
+            }
+        });
+    </script>
+</body>
+
+</html>

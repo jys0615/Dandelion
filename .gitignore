@@ -51,3 +51,56 @@ python-server/venv/
 app.log
 node_modules/
 **/node_modules/
+
+# === Global Ignore ===
+.DS_Store
+*.log
+*.gz
+*.tmp
+.env
+.env.*
+node_modules/
+coverage/
+dist/
+build/
+
+# === Backend Server ===
+backend-server/.gradle/
+backend-server/build/
+backend-server/bin/
+backend-server/out/
+backend-server/app.log*
+backend-server/.env
+
+# Python Server (inside backend-server)
+backend-server/python-server/__pycache__/
+backend-server/python-server/.venv/
+backend-server/python-server/venv/
+backend-server/python-server/*.pyc
+backend-server/python-server/*.pyo
+backend-server/python-server/*.pyd
+backend-server/python-server/.env
+backend-server/python-server/*.db
+backend-server/python-server/*.sqlite3
+
+# === Frontend Server ===
+frontend-server/.next/
+frontend-server/node_modules/
+frontend-server/out/
+frontend-server/.env
+frontend-server/.env.*
+
+# === NodeJS Server ===
+nodejs-server/node_modules/
+nodejs-server/dist/
+nodejs-server/.env
+nodejs-server/.env.*
+
+# === IDE / OS ===
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+Thumbs.db

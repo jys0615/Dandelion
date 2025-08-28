@@ -1,0 +1,68 @@
+.
+├── ddmmarklet
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── pwa
+│   │   ├── css
+│   │   │   └── styles.css
+│   │   ├── index.html
+│   │   ├── js
+│   │   │   ├── app.js
+│   │   │   └── services
+│   │   │       ├── bookmarklet.js
+│   │   │       └── storage.js
+│   │   ├── manifest.json
+│   │   └── sw.js
+│   ├── server.js
+│   └── server.jsr
+├── package-lock.json
+├── package.json
+├── project_structure.txt
+├── saeolmarklet
+│   ├── .env
+│   ├── images
+│   │   ├── icon-128.png
+│   │   ├── icon-144.png
+│   │   ├── icon-152.png
+│   │   ├── icon-192.png
+│   │   ├── icon-384.png
+│   │   ├── icon-512.png
+│   │   ├── icon-72.png
+│   │   └── icon-96.png
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── pwa
+│   │   ├── css
+│   │   │   └── styles.css
+│   │   ├── index.html
+│   │   ├── js
+│   │   │   ├── app.js
+│   │   │   ├── services
+│   │   │   │   ├── bookmarklet.js
+│   │   │   │   └── storage.js
+│   │   │   └── utils
+│   │   │       └── validator.js
+│   │   ├── manifest.json
+│   │   ├── offline.html
+│   │   └── sw.js
+│   ├── README.md
+│   └── server
+│       └── app.js
+├── safetymarklet
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── pwa
+│   │   ├── css
+│   │   │   └── styles.css
+│   │   ├── index.html
+│   │   ├── js
+│   │   │   ├── app.js
+│   │   │   └── services
+│   │   │       ├── bookmarklet.js
+│   │   │       └── storage.js
+│   │   ├── manifest.json
+│   │   └── sw.js
+│   └── server.js
+└── server.js
+
+19 directories, 47 files

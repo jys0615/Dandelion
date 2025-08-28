@@ -24,7 +24,8 @@ public class ComplaintRequest {
     // 선택 공통 필드
     private String name; // 이름
 
-    // 동적 필드 처리를 위한 Map
+    // 동적 필드 처리를 위한 Map - @Builder.Default로 경고 해결
+    @Builder.Default
     private Map<String, Object> additionalProperties = new HashMap<>();
 
     @JsonAnyGetter
