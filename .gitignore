@@ -36,11 +36,14 @@ python-server/*.pyd
 python-server/.DS_Store
 python-server/*.db
 python-server/*.sqlite3
+backend-server/python-server/venv/   # ← 추가
 
 # Node.js
 bookMarklet/ddmmarklet/node_modules/
 bookMarklet/saeolmarklet/node_modules/
 bookMarklet/safetymarklet/node_modules/
+nodejs-server/node_modules/           # ← 추가
+node_modules/
 
 # OS/utility
 .DS_Store
