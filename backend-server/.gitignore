@@ -46,3 +46,6 @@ python-server/.env
 python-server/.DS_Store
 python-server/*.db
 python-server/*.sqlite3
+python-server/venv/
+.env
+app.log

@@ -2,9 +2,18 @@ package kr.ddm.civic.civicdraft.service;
 
 import org.springframework.stereotype.Service;
 import java.util.*;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+/**
+ * 입력 파싱 서비스
+ * - 민원 요약에서 위치, 이슈유형, 사실, 요청사항 등 추출
+ */
+@Schema(description = "입력 파싱 서비스. 민원 요약에서 위치, 이슈유형, 사실, 요청사항 등 추출.")
 @Service
 public class InputParserService {
+    /**
+     * 민원 요약에서 각종 정보 추출
+     */
     public Map<String, Object> parse(String userText, boolean photos, boolean videos, String locationText) {
         Map<String, Object> result = new HashMap<>();
         // 장소 추출

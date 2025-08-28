@@ -1,0 +1,52 @@
+channels:
+  - id: safety_report
+    title: 안전신문고
+    keywords:
+      - term: 불법주정차
+        weight: 2.0
+      - term: 고장
+        weight: 1.5
+      - term: 위험
+        weight: 1.5
+      - term: 사고
+        weight: 1.2
+      - term: 파손
+        weight: 1.2
+    penalties:
+      - term: 정보공개
+        weight: -1.0
+    priority: 1
+  - id: mayor_board
+    title: 구청장에게 바란다
+    keywords:
+      - term: 신호주기
+        weight: 2.0
+      - term: 좌회전
+        weight: 1.5
+      - term: 연동
+        weight: 1.2
+      - term: 개선
+        weight: 1.2
+      - term: 확장
+        weight: 1.2
+    penalties:
+      - term: 정보공개
+        weight: -0.5
+    priority: 2
+  - id: saeol
+    title: 새올전자민원창구
+    keywords:
+      - term: 정보공개
+        weight: 2.0
+      - term: 허가
+        weight: 1.5
+      - term: 인가
+        weight: 1.2
+      - term: 점용
+        weight: 1.2
+      - term: 복구
+        weight: 1.2
+    penalties:
+      - term: 위험
+        weight: -0.5
+    priority: 3

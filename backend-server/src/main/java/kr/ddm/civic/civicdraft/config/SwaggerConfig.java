@@ -4,6 +4,10 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 public class SwaggerConfig {
@@ -12,7 +16,36 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("CivicDraft API")
-                        .description("동대문구 민원 초안 생성 서비스 API")
-                        .version("v1.0.0"));
+                        .description("동대문구 민원 초안 생성 서비스 API.\n\n민원 요약 → 채널 추천 → 단계별 입력 → GPT 기반 초안 생성 → 첨부/법률정보 안내 → DB 저장/알림")
+                        .version("v1.0.0")
+                        .contact(new io.swagger.v3.oas.models.info.Contact()
+                            .name("동대문구 민원팀")
+                            .email("support@ddm.go.kr")
+                            .url("https://www.ddm.go.kr"))
+                );
+    }
+
+    /**
+     * Swagger UI 및 OpenAPI 문서 캐시 무효화 필터
+     * 모든 /v3/api-docs 및 /swagger-ui 경로에 대해 캐시 헤더 비활성화
+     */
+    @Bean
+    public FilterRegistrationBean<Filter> swaggerNoCacheFilter() {
+        FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new Filter() {
+            @Override
+            public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+                if (response instanceof HttpServletResponse resp) {
+                    resp.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+                    resp.setHeader("Pragma", "no-cache");
+                    resp.setDateHeader("Expires", 0);
+                }
+                chain.doFilter(request, response);
+            }
+        });
+        registrationBean.addUrlPatterns("/v3/api-docs/*", "/swagger-ui/*", "/swagger-ui.html");
+        registrationBean.setName("swaggerNoCacheFilter");
+        registrationBean.setOrder(1);
+        return registrationBean;
     }
 }

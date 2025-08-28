@@ -4,6 +4,10 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
 group = 'kr.ddm.civic'
 version = '0.0.1-SNAPSHOT'
 description = '동대문구 민원 채널 분류 → 초안 생성 → 법령 근거 첨부 API'
