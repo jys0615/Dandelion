@@ -52,3 +52,5 @@ node_modules/
 # 기타
 HELP.md
 .env
+backend-server/python-server/venv/
+nodejs-server/node_modules/
