@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2196F3">
+    <title>민원 자동입력 도우미</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/src/css/style.css">
+    <link rel="stylesheet" href="/src/css/responsive.css">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>민원 자동입력 도우미</h1>
+            <button id="installBtn" style="display:none;">앱 설치</button>
+        </header>
+
+        <nav class="tab-navigation">
+            <button class="tab-btn active" data-tab="form">민원 작성</button>
+            <button class="tab-btn" data-tab="bookmarks">내 북마클릿</button>
+        </nav>
+
+        <main>
+            <section id="form-tab" class="tab-content active">
+                <div id="complaint-form"></div>
+            </section>
+
+            <section id="bookmarks-tab" class="tab-content">
+                <div id="bookmark-list"></div>
+            </section>
+        </main>
+
+        <div id="notification" class="notification"></div>
+    </div>
+
+    <script src="/src/js/api.js"></script>
+    <script src="/src/js/bookmarkManager.js"></script>
+    <script src="/src/js/formHandler.js"></script>
+    <script src="/src/components/notification.js"></script>
+    <script src="/src/components/complaintForm.js"></script>
+    <script src="/src/components/bookmarkList.js"></script>
+    <script src="/src/js/pwa.js"></script>
+    <script src="/src/js/app.js"></script>
+</body>
+</html>
