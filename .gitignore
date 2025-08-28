@@ -1,14 +1,11 @@
-# IDE & build system
+HELP.md
 .gradle
 build/
-.idea
-*.iws
-*.iml
-*.ipr
-out/
-.vscode/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# STS
+### STS ###
 .apt_generated
 .classpath
 .factorypath
@@ -17,40 +14,38 @@ out/
 .springBeans
 .sts4-cache
 bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
 
-# NetBeans
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
+### VS Code ###
+.vscode/
+
 # Python
 python-server/__pycache__/
-python-server/.env
-draft/.env
 python-server/.venv/
 python-server/*.pyc
 python-server/*.pyo
 python-server/*.pyd
+python-server/.env
 python-server/.DS_Store
 python-server/*.db
 python-server/*.sqlite3
-backend-server/python-server/venv/   # ← 추가
-
-# Node.js
-bookMarklet/ddmmarklet/node_modules/
-bookMarklet/saeolmarklet/node_modules/
-bookMarklet/safetymarklet/node_modules/
-nodejs-server/node_modules/           # ← 추가
-node_modules/
-
-# OS/utility
-.DS_Store
-*.log
-
-# 기타
-HELP.md
+python-server/venv/
 .env
-backend-server/python-server/venv/
-nodejs-server/node_modules/
+app.log
