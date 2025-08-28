@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-    origin: ['http://localhost:8081', 'http://localhost:8082', 'http://localhost:8083', 'http://localhost:8084'],
+    origin: ['http://localhost:8081', 'http://localhost:8082', 'http://localhost:8083', 'http://localhost:8084', 'http://localhost:8085'],
     credentials: true
 }));
 app.use(bodyParser.json());
@@ -39,6 +39,13 @@ const COMPLAINT_SYSTEMS = {
         url: 'http://localhost:8083',
         siteUrl: 'https://eminwon.ddm.go.kr',
         generator: generateSaeolBookmarklet
+    },
+    EUNGDAPSO: {
+        name: '서울시 응답소',
+        port: 8085,
+        url: 'http://localhost:8085',
+        siteUrl: 'https://eungdapso.seoul.go.kr',
+        generator: generateEungdapsoBookmarklet
     }
 };
 
@@ -559,6 +566,34 @@ function generateSaeolBookmarklet(data, templateId) {
         .trim();
 }
 
+function generateEungdapsoBookmarklet(data, templateId) {
+    // Base64 인코딩 방식 사용
+    const jsonStr = JSON.stringify(data);
+    const base64Data = Buffer.from(jsonStr, 'utf-8').toString('base64');
+
+    const code = `void((function(){
+        var d=atob('${base64Data}');
+        var c=JSON.parse(d);
+        var e=document.getElementById;
+        var p1=e('personInfoY');
+        if(p1)p1.checked=true;
+        var p2=e('personInfoThirdY');
+        if(p2)p2.checked=true;
+        var em=e('applcntEmail');
+        if(em&&c.email)em.value=c.email;
+        var sj=e('sj');
+        if(sj&&c.title)sj.value=c.title;
+        var cn=e('cn');
+        if(cn&&c.contents)cn.value=c.contents;
+        var ar=e('cvplOccrrncArea');
+        if(ar&&c.area)ar.value=c.area;
+        alert('완료');
+    })())`;
+
+    // 한 줄로 만들기
+    return code.replace(/\s+/g, '');
+}
+
 // 404 핸들러
 app.use((req, res) => {
     res.status(404).json({
@@ -590,28 +625,5 @@ app.listen(PORT, () => {
     Object.entries(COMPLAINT_SYSTEMS).forEach(([key, value]) => {
         console.log(` - ${key}: ${value.name} (${value.siteUrl})`);
     });
-    console.log('='.repeat(50));
-    console.log('사용 가능한 엔드포인트:');
-    console.log(' GET /api/systems - 민원 시스템 목록 조회');
-    console.log(' POST /api/generate-bookmarklet - 북마클릿 생성');
-    console.log(' GET /api/template/:id - 템플릿 조회');
-    console.log(' GET /api/templates - 템플릿 목록');
-    console.log(' DELETE /api/template/:id - 템플릿 삭제');
-    console.log('='.repeat(50));
-    console.log('');
-    console.log('📝 요청 예시 (POST /api/generate-bookmarklet):');
-    console.log(JSON.stringify({
-        system: "SAFETY",  // SAFETY, DDM, SAEOL 중 선택
-        reportType: "01",
-        title: "도로 파손 신고",
-        contents: "도로에 큰 구멍이 있습니다",
-        phone: "010-1234-5678",
-        name: "홍길동",
-        email: "test@gmail.com",
-        shareContent: "0",
-        personType: "0",
-        privacyAgree: true,
-        autoRecommend: true
-    }, null, 2));
     console.log('='.repeat(50));
 });
