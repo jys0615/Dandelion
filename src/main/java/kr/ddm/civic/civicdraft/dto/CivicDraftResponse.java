@@ -13,6 +13,8 @@ public class CivicDraftResponse {
     private double confidence;
     private List<String> missingFields;
     private Map<String, Object> safetyFlags;
+    /** 첨부파일 메타데이터 (별도 업로드/다운로드 API에서 관리) */
+    private List<AttachmentMeta> attachments;
     private String attachmentGuidance;
     private String legalInfoSummary;
 
@@ -34,6 +36,9 @@ public class CivicDraftResponse {
     public void setMissingFields(List<String> missingFields) { this.missingFields = missingFields; }
     public Map<String, Object> getSafetyFlags() { return safetyFlags; }
     public void setSafetyFlags(Map<String, Object> safetyFlags) { this.safetyFlags = safetyFlags; }
+
+    public List<AttachmentMeta> getAttachments() { return attachments; }
+    public void setAttachments(List<AttachmentMeta> attachments) { this.attachments = attachments; }
 
     public String getAttachmentGuidance() { return attachmentGuidance; }
     public void setAttachmentGuidance(String attachmentGuidance) { this.attachmentGuidance = attachmentGuidance; }
