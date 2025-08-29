@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class AiImprovementService {
 
-    @Value("${ai.server.url:http://localhost:8000}")
+    @Value("${ai.server.url:http://3.34.192.29:8000}")
     private String aiServerUrl;
 
     private final ObjectMapper objectMapper;
@@ -46,7 +46,7 @@ public class AiImprovementService {
             requestData.put("summary", content != null ? content : "");
 
             String jsonRequest = objectMapper.writeValueAsString(requestData);
-            final String url = aiServerUrl + "/process";
+            final String url = aiServerUrl + "/process/stream";
 
             log.info("AI 서버로 요청 전송: {}", url);
             log.debug("요청 데이터(JSON): {}", jsonRequest);
