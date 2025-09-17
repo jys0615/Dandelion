@@ -9,13 +9,6 @@
 
 ---
 
-## 🔗 관련 리포지토리
-- [Frontend-User Repository](https://github.com/Couque-d-Asse/Frontend-User)  
-- [Backend Repository](https://github.com/Locathon/BE)  
-- [AI Repository](https://github.com/Locathon/AI)  
-
----
-
 ## 🛠 기술 스택
 - **Frontend**: Next.js, TypeScript, React  
 - **Backend**: Spring Boot, JPA, PostgreSQL  
